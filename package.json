@@ -1,0 +1,30 @@
+{
+  "name": "blockchain-uppgift",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoooooMei/blockchain-uppgift.git"
+  },
+  "keywords": [],
+  "author": "Johan Meisel",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.0",
+    "vitest": "^3.1.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "mongoose": "^8.14.1"
+  },
+  "bugs": {
+    "url": "https://github.com/JoooooMei/blockchain-uppgift/issues"
+  },
+  "homepage": "https://github.com/JoooooMei/blockchain-uppgift#readme"
+}
