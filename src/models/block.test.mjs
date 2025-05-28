@@ -3,14 +3,14 @@ import Block from './Block.mjs';
 
 describe('Block', () => {
   const timestamp = 2000;
-  const hash = 'current-hash';
+  const currentHash = 'current-hash';
   const lastHash = 'prev-hash';
   const data = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const nounce = 1;
   const difficulty = 1;
 
   const block = new Block({
-    hash,
+    hash: currentHash,
     lastHash,
     timestamp,
     data,
@@ -43,6 +43,20 @@ describe('Block', () => {
 
     it('should have difficulty property', () => {
       expect(block).toHaveProperty('difficulty');
+    });
+  });
+
+  describe('Should have correct initaialization of its properties', () => {
+    it('should set a timestamp value', () => {
+      expect(block.timestamp).not.toEqual(undefined);
+    });
+
+    it('should have correct hash', () => {
+      expect(block.hash).toEqual(currentHash);
+    });
+
+    it('should set lastHash to the hash of the previous block', () => {
+      expect(block.hash).toEqual(lastHash);
     });
   });
 });
