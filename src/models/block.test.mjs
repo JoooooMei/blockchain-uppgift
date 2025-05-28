@@ -5,11 +5,17 @@ describe('Block', () => {
   const timestamp = 2000;
   const hash = 'current-hash';
   const lastHash = 'prev-hash';
+  const data = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const nounce = 1;
+  const difficulty = 1;
 
   const block = new Block({
     hash,
     lastHash,
     timestamp,
+    data,
+    nounce,
+    difficulty,
   });
 
   describe('Should have the correct properties', () => {
@@ -25,6 +31,18 @@ describe('Block', () => {
     it('should have a lastHash property', () => {
       expect(block).toHaveProperty('lastHash');
       console.log('lastHash here: ', block.lastHash);
+    });
+
+    it('should have data property', () => {
+      expect(block).toHaveProperty('data');
+    });
+
+    it('should have nounce property', () => {
+      expect(block).toHaveProperty('nounce');
+    });
+
+    it('should have difficulty property', () => {
+      expect(block).toHaveProperty('difficulty');
     });
   });
 });
