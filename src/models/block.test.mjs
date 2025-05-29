@@ -1,13 +1,14 @@
 import { describe, expect } from 'vitest';
 import Block from './Block.mjs';
 import { GENESIS_BLOCK } from './genesis.mjs';
+import { createHash } from '../utilities/hash.mjs';
 
 describe('Block', () => {
   const timestamp = 2000;
   const currentHash = 'current-hash';
   const lastHash = 'prev-hash';
   const data = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const nounce = 1;
+  const nonce = 1;
   const difficulty = 1;
   const message = 'A testdriven message';
 
@@ -16,7 +17,7 @@ describe('Block', () => {
     lastHash,
     timestamp,
     data,
-    nounce,
+    nonce,
     difficulty,
     message,
   });
@@ -40,8 +41,8 @@ describe('Block', () => {
       expect(block).toHaveProperty('data');
     });
 
-    it('should have nounce property', () => {
-      expect(block).toHaveProperty('nounce');
+    it('should have nonce property', () => {
+      expect(block).toHaveProperty('nonce');
     });
 
     it('should have a message property', () => {
@@ -84,6 +85,55 @@ describe('Block', () => {
 
     it('should return the genesis data', () => {
       expect(genesisBlock).toEqual(GENESIS_BLOCK);
+    });
+  });
+
+  describe('mineblock function, mineBlock()', () => {
+    const previousBlock = Block.genesis();
+    const data = [5, 6, 7, 8, 9, 10];
+    const minedBlock = Block.mineBlock({ previousBlock, data });
+
+    it('shouild return an instance of Block class', () => {
+      expect(minedBlock instanceof Block).toBeTruthy();
+    });
+
+    it('should set the lastHash to the hash of the previous block', () => {
+      expect(minedBlock.lastHash).toEqual(previousBlock.hash);
+    });
+
+    it('should set the data', () => {
+      expect(minedBlock.data).toEqual(data);
+    });
+
+    it('should set the timestamp', () => {
+      expect(minedBlock.timestamp).not.toEqual(undefined);
+    });
+
+    it('should create a SHA-256 hash based on given and correct input', () => {
+      expect(minedBlock.hash).toEqual(
+        createHash(
+          minedBlock.timestamp,
+          previousBlock.hash,
+          data,
+          minedBlock.nonce,
+          minedBlock.difficulty
+        )
+      );
+    });
+
+    it('should create a hash based on the difficulty level', () => {
+      expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
+        '0'.repeat(minedBlock.difficulty)
+      );
+    });
+
+    it('should adjust the difficulty level', () => {
+      const results = [
+        previousBlock.difficulty + 1,
+        previousBlock.difficulty - 1,
+      ];
+
+      expect(results.includes(minedBlock.difficulty)).toBe(true);
     });
   });
 });

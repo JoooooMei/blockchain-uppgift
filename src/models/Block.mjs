@@ -1,25 +1,50 @@
 import { GENESIS_BLOCK } from './genesis.mjs';
+import { MINE_RATE } from '../utilities/config.mjs';
+import { createHash } from '../utilities/hash.mjs';
 
 export default class Block {
-  constructor({
-    timestamp,
-    hash,
-    lastHash,
-    data,
-    nounce,
-    difficulty,
-    message,
-  }) {
+  constructor({ timestamp, hash, lastHash, data, nonce, difficulty, message }) {
     this.timestamp = timestamp;
     this.hash = hash;
     this.lastHash = lastHash;
     this.data = data;
-    this.nounce = nounce;
+    this.nonce = nonce;
     this.difficulty = difficulty;
     this.message = message;
   }
 
   static genesis() {
     return new this(GENESIS_BLOCK);
+  }
+
+  static mineBlock({ previousBlock, data }) {
+    let timestamp, hash;
+    const lastHash = previousBlock.hash;
+    let difficulty = previousBlock.difficulty;
+    let nonce = 0;
+
+    do {
+      nonce++;
+      timestamp = Date.now();
+      difficulty = Block.adjustDifficultyLevel({
+        block: previousBlock,
+        timestamp,
+      });
+      hash = createHash(timestamp, lastHash, data, nonce, difficulty);
+    } while (!hash.startsWith('0'.repeat(difficulty)));
+
+    return new this({ timestamp, hash, lastHash, data, nonce, difficulty });
+  }
+
+  static adjustDifficultyLevel({ block, timestamp }) {
+    const { difficulty } = block;
+
+    if (difficulty < 1) return 1;
+
+    if (timestamp - block.timestamp > MINE_RATE) {
+      return difficulty - 1;
+    }
+
+    return difficulty + 1;
   }
 }

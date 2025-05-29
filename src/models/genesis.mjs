@@ -5,7 +5,7 @@ export const GENESIS_BLOCK = {
   data: [],
   hash: '#1 genesis block',
   difficulty: INITIAL_DIFFICULTY,
-  nounce: 0,
+  nonce: 0,
   lastHash: '############',
   message: `In ledgers wide, no king, no chain. 
     Each block a voice, none speak in vain. 
