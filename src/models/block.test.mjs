@@ -1,5 +1,6 @@
 import { describe, expect } from 'vitest';
 import Block from './Block.mjs';
+import { GENESIS_BLOCK } from './genesis.mjs';
 
 describe('Block', () => {
   const timestamp = 2000;
@@ -8,6 +9,7 @@ describe('Block', () => {
   const data = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const nounce = 1;
   const difficulty = 1;
+  const message = 'A testdriven message';
 
   const block = new Block({
     hash: currentHash,
@@ -16,12 +18,13 @@ describe('Block', () => {
     data,
     nounce,
     difficulty,
+    message,
   });
 
   describe('Should have the correct properties', () => {
     it('should have a timestamp property', () => {
       expect(block).toHaveProperty('timestamp');
-      console.log('Timestamp print here:', block.timestamp);
+      console.log('timestamp print here:', block.timestamp);
     });
 
     it('Should have a hash property', () => {
@@ -41,6 +44,10 @@ describe('Block', () => {
       expect(block).toHaveProperty('nounce');
     });
 
+    it('should have a message property', () => {
+      expect(block).toHaveProperty('message');
+    });
+
     it('should have difficulty property', () => {
       expect(block).toHaveProperty('difficulty');
     });
@@ -56,7 +63,27 @@ describe('Block', () => {
     });
 
     it('should set lastHash to the hash of the previous block', () => {
-      expect(block.hash).toEqual(lastHash);
+      expect(block.lastHash).toEqual(lastHash);
+    });
+
+    it('should set the data property', () => {
+      expect(block.data).toEqual(data);
+    });
+
+    it('should return an instance of the Block class', () => {
+      expect(block instanceof Block).toBeTruthy();
+    });
+  });
+
+  describe('genisis() function', () => {
+    const genesisBlock = Block.genesis();
+
+    it('should return an instance of the Block class', () => {
+      expect(genesisBlock instanceof Block).toBeTruthy();
+    });
+
+    it('should return the genesis data', () => {
+      expect(genesisBlock).toEqual(GENESIS_BLOCK);
     });
   });
 });
