@@ -2,6 +2,7 @@ import { describe, expect } from 'vitest';
 import Block from './Block.mjs';
 import { GENESIS_BLOCK } from './genesis.mjs';
 import { createHash } from '../utilities/hash.mjs';
+import { MINE_RATE } from '../utilities/config.mjs';
 
 describe('Block', () => {
   const timestamp = 2000;
