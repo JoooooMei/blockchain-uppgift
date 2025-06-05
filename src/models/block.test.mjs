@@ -125,6 +125,7 @@ describe('Block', () => {
       expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
         '0'.repeat(minedBlock.difficulty)
       );
+      console.log('hash: ', minedBlock.hash);
     });
 
     it('should adjust the difficulty level', () => {
@@ -134,6 +135,31 @@ describe('Block', () => {
       ];
 
       expect(results.includes(minedBlock.difficulty)).toBe(true);
+    });
+  });
+
+  describe('Adjust the difficulty level', () => {
+    it('should raise the difficulty level for a quickly mined block', () => {
+      expect(
+        Block.adjustDifficultyLevel({
+          block,
+          timestamp: block.timestamp + MINE_RATE - 100,
+        })
+      ).toEqual(block.difficulty + 1);
+    });
+
+    it('should lower the difficulty level for a slowly mined block', () => {
+      expect(
+        Block.adjustDifficultyLevel({
+          block,
+          timestamp: block.timestamp + MINE_RATE + 100,
+        })
+      ).toEqual(block.difficulty - 1);
+    });
+
+    it('should have a lower limit of 1 for difficulty level', () => {
+      block.difficulty = -1;
+      expect(Block.adjustDifficultyLevel({ block })).toEqual(1);
     });
   });
 });
