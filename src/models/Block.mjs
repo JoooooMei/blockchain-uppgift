@@ -42,10 +42,9 @@ export default class Block {
     if (difficulty < 1) return 1;
 
     if (timestamp - block.timestamp > MINE_RATE) {
-      console.log('difficulty level goes down: ', difficulty);
       return difficulty - 1;
     }
-    console.log('difficulty level goes up: ', difficulty);
+
     return difficulty + 1;
   }
 }
