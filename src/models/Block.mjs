@@ -20,7 +20,7 @@ export default class Block {
   static mineBlock({ previousBlock, data }) {
     let timestamp, hash;
     const lastHash = previousBlock.hash;
-    let difficulty = previousBlock.difficulty;
+    let { difficulty } = previousBlock;
     let nonce = 0;
 
     do {
@@ -31,7 +31,7 @@ export default class Block {
         timestamp,
       });
       hash = createHash(timestamp, lastHash, data, nonce, difficulty);
-    } while (!hash.startsWith('0'.repeat(difficulty)));
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
 
     return new this({ timestamp, hash, lastHash, data, nonce, difficulty });
   }
@@ -42,9 +42,10 @@ export default class Block {
     if (difficulty < 1) return 1;
 
     if (timestamp - block.timestamp > MINE_RATE) {
+      console.log('difficulty level goes down: ', difficulty);
       return difficulty - 1;
     }
-
+    console.log('difficulty level goes up: ', difficulty);
     return difficulty + 1;
   }
 }

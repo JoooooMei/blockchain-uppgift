@@ -26,7 +26,6 @@ describe('Block', () => {
   describe('Should have the correct properties', () => {
     it('should have a timestamp property', () => {
       expect(block).toHaveProperty('timestamp');
-      console.log('timestamp print here:', block.timestamp);
     });
 
     it('Should have a hash property', () => {
@@ -35,7 +34,6 @@ describe('Block', () => {
 
     it('should have a lastHash property', () => {
       expect(block).toHaveProperty('lastHash');
-      console.log('lastHash here: ', block.lastHash);
     });
 
     it('should have data property', () => {
@@ -126,7 +124,6 @@ describe('Block', () => {
       expect(minedBlock.hash.substring(0, minedBlock.difficulty)).toEqual(
         '0'.repeat(minedBlock.difficulty)
       );
-      console.log('hash: ', minedBlock.hash);
     });
 
     it('should adjust the difficulty level', () => {

@@ -8,8 +8,8 @@ describe('createHash function', () => {
   });
 
   it('should generate the same output with the same input regardless of order', () => {
-    expect(createHash('johan', 'kan', 'hasha')).toEqual(
-      createHash('kan', 'johan', 'hasha')
+    expect(createHash('kan', 'johan', 'hasha')).toEqual(
+      createHash('johan', 'kan', 'hasha')
     );
   });
 });
