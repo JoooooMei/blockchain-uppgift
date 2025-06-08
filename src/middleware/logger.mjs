@@ -1,31 +1,16 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import Storage from '../models/Storage.mjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const logs = new Storage('../errorLogs', 'errorlogs.txt');
 
-export const logger = (req, res, next) => {
-  const message = `${req.method} ${
+export const logger = async (err, req, res, next) => {
+  const message = `\nERROR LOG\nURL: ${
     req.originalUrl
-  } - ${new Date().toLocaleDateString('sv-SE')} ${new Date().toLocaleTimeString(
+  }\nDate: ${new Date().toLocaleDateString(
     'sv-SE'
-  )}\n`;
+  )}\nTime: ${new Date().toLocaleTimeString('sv-SE')}\nSuccess: ${
+    err.success
+  }\nMessage: ${err.message}\n\n`;
 
-  console.log('Metod: ', message);
-
-  const logDir = path.join(__dirname, '..', 'logs');
-  const logFilePath = path.join(logDir, 'logs.txt');
-
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-
-  fs.appendFile(logFilePath, message, (err) => {
-    if (err) {
-      console.error('Unable to write log to file:', err.message);
-    }
-  });
-
-  next();
+  await logs.appendToFile(message);
+  next(err, req, res);
 };

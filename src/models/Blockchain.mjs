@@ -55,7 +55,7 @@ export default class Blockchain {
     return true;
   }
 
-  find(hash) {
-    return this.chain.find((block) => block.hash === hash);
+  static find(chain, hash) {
+    return chain.find((block) => block.hash === hash);
   }
 }
