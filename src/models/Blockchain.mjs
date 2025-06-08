@@ -7,10 +7,12 @@ export default class Blockchain {
     // this.chain.push(Block.genesis())
   }
 
-  addBlock({ data }) {
+  addBlock({ data, message }) {
+    console.log('Body igen: ', data, message);
     const addedBlock = Block.mineBlock({
       previousBlock: this.chain.at(-1),
       data,
+      message,
     });
     this.chain.push(addedBlock);
   }

@@ -17,7 +17,7 @@ export default class Block {
     return new this(GENESIS_BLOCK);
   }
 
-  static mineBlock({ previousBlock, data }) {
+  static mineBlock({ previousBlock, data, message }) {
     let timestamp, hash;
     const lastHash = previousBlock.hash;
     let { difficulty } = previousBlock;
@@ -30,10 +30,18 @@ export default class Block {
         block: previousBlock,
         timestamp,
       });
-      hash = createHash(timestamp, lastHash, data, nonce, difficulty);
+      hash = createHash(timestamp, lastHash, data, nonce, difficulty, message);
     } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
 
-    return new this({ timestamp, hash, lastHash, data, nonce, difficulty });
+    return new this({
+      timestamp,
+      hash,
+      lastHash,
+      data,
+      nonce,
+      difficulty,
+      message,
+    });
   }
 
   static adjustDifficultyLevel({ block, timestamp }) {

@@ -20,12 +20,14 @@ export const getBlockByHash = catchErrorAsync(async (req, res) => {
 });
 
 export const createBlock = catchErrorAsync(async (req, res) => {
-  const data = req.body.data;
+  const data = req.body;
+  console.log('The body: ', req.body);
   blockChain.addBlock(data);
 
   res.status(201).json({
     success: true,
-    message: 'Block added to blockchain',
+    statusMessage: 'Block added to blockchain',
     data: blockChain.chain,
+    message: blockChain.message,
   });
 });
